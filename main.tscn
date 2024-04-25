@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://bswd65s4ftjy2"]
+
+[ext_resource type="Texture2D" uid="uid://dgsx1x7e6rr50" path="res://assets/bg.png" id="1_ad3ok"]
+[ext_resource type="Script" path="res://main.gd" id="1_k0xci"]
+[ext_resource type="PackedScene" uid="uid://wgnlply0j7vp" path="res://player.tscn" id="2_v0sj6"]
+[ext_resource type="PackedScene" uid="uid://8255evnmeuak" path="res://monkey.tscn" id="3_c1nh4"]
+[ext_resource type="Texture2D" uid="uid://bnljo1rhsgl6s" path="res://assets/item.png" id="4_tp1x5"]
+[ext_resource type="Texture2D" uid="uid://c1owmj2ce5buf" path="res://assets/胜利.png" id="6_er3it"]
+[ext_resource type="Script" path="res://SpriteBeehive2D.gd" id="6_gay7w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_704o0"]
+size = Vector2(19, 17)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_k0xci")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ad3ok")
+centered = false
+
+[node name="Player" parent="." instance=ExtResource("2_v0sj6")]
+position = Vector2(118, 133)
+
+[node name="子弹" type="Node2D" parent="."]
+
+[node name="Monkey" parent="." instance=ExtResource("3_c1nh4")]
+position = Vector2(129, 66)
+
+[node name="SpriteBeehive2D" type="Sprite2D" parent="."]
+position = Vector2(128, 12)
+texture = ExtResource("4_tp1x5")
+script = ExtResource("6_gay7w")
+
+[node name="AreaBeehive" type="Area2D" parent="SpriteBeehive2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteBeehive2D/AreaBeehive"]
+position = Vector2(0.5, -1.5)
+shape = SubResource("RectangleShape2D_704o0")
+
+[node name="TipSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(128, 61)
+scale = Vector2(0.1, 0.100503)
+texture = ExtResource("6_er3it")
+
+[node name="Bee" type="Node2D" parent="."]
+
+[node name="LeftMarker2D" type="Marker2D" parent="."]
+position = Vector2(72, 45)
+
+[node name="RightMarker2D" type="Marker2D" parent="."]
+position = Vector2(184, 45)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="gameover" from="Player" to="." method="_on_player_gameover"]
+[connection signal="gamefail" from="Monkey" to="." method="_on_monkey_gamefail"]
+[connection signal="gamepass" from="Monkey" to="." method="_on_monkey_gamepass"]
+[connection signal="area_entered" from="SpriteBeehive2D/AreaBeehive" to="SpriteBeehive2D" method="_on_area_beehive_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

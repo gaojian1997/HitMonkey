@@ -1,0 +1,94 @@
+[gd_scene load_steps=7 format=3 uid="uid://dioxtktjyusle"]
+
+[ext_resource type="Script" path="res://bee.gd" id="1_cbu01"]
+[ext_resource type="Texture2D" uid="uid://c6vwro7kscfp4" path="res://assets/enemy.png" id="1_ujhov"]
+
+[sub_resource type="Animation" id="Animation_vfym2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_ujhov")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_0hmdc"]
+resource_name = "fly"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_ujhov")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2bwxr"]
+_data = {
+"RESET": SubResource("Animation_vfym2"),
+"fly": SubResource("Animation_0hmdc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dr1sb"]
+size = Vector2(20, 14)
+
+[node name="bee" type="Node2D"]
+script = ExtResource("1_cbu01")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ujhov")
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2bwxr")
+}
+autoplay = "fly"
+
+[node name="BeeArea2D" type="Area2D" parent="." groups=["bees"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeeArea2D"]
+shape = SubResource("RectangleShape2D_dr1sb")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, 2.38419e-07)
+scale = Vector2(1, 0.3)
+
+[connection signal="area_entered" from="BeeArea2D" to="." method="_on_bee_area_2d_area_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

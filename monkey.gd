@@ -29,7 +29,7 @@ func _on_animated_sprite_2d_animation_finished():
 func _on_animated_sprite_2d_frame_changed():
   if $AnimatedSprite2D.animation == "down":
     if $AnimatedSprite2D.frame == 1 or $AnimatedSprite2D.frame == 4:
-      speed = 5
+      speed = 2.5
   if $AnimatedSprite2D.animation == "up":
     if $AnimatedSprite2D.frame == 1 or $AnimatedSprite2D.frame == 4:
       speed = -7.5
